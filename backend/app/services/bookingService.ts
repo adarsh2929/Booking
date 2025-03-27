@@ -152,7 +152,7 @@ const createBooking = async (req: Request, res: Response, next: NextFunction) =>
     // Create the booking
     const booking = await bookingRepo.createBooking(bookingData);
 
-    return DefaultResponse(res, 201, "Booking created successfully", booking);
+    return DefaultResponse(res, 201, "Booking created successfully");
   } catch (error) {
     next(error);
   }
