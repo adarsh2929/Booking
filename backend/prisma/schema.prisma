@@ -1,0 +1,57 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+enum BookingType {
+  FULLDAY
+  HALFDAY
+  CUSTOM
+}
+
+enum BookingSlot {
+  FIRSTHALF
+  SECONDHALF
+}
+
+model User {
+  id            String    @id @default(uuid())
+  firstName     String
+  lastName      String
+  email         String    @unique
+  password      String
+  accessToken   String?
+  isVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bookings      Booking[]
+}
+
+model Booking {
+  id            String      @id @default(uuid())
+  customerName  String
+  customerEmail String
+  bookingDate   DateTime   @db.Date
+  bookingType   BookingType
+  bookingSlot   BookingSlot?
+  startTime     DateTime?   
+  endTime       DateTime?   
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+
+  @@unique([bookingDate, bookingType, bookingSlot])
+}
+
+
+
+
+
+
